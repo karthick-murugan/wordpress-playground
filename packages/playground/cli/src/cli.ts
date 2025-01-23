@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import yargs from 'yargs';
+import readline from 'readline';
 import { startServer } from './server';
 import {
 	PHP,
@@ -229,8 +230,8 @@ async function run() {
 			}
 			lastCaption =
 				e.detail.caption || lastCaption || 'Running the Blueprint';
-			process.stdout.clearLine(0);
-			process.stdout.cursorTo(0);
+			readline.clearLine(process.stdout, 0);
+			readline.cursorTo(process.stdout, 0);
 			process.stdout.write(
 				'\r\x1b[K' + `${lastCaption.trim()} – ${e.detail.progress}%`
 			);
@@ -276,8 +277,8 @@ async function run() {
 						Math.min(100, (100 * e.detail.loaded) / e.detail.total)
 					);
 					if (!args.quiet) {
-						process.stdout.clearLine(0);
-						process.stdout.cursorTo(0);
+						readline.clearLine(process.stdout, 0);
+						readline.cursorTo(process.stdout, 0);
 						process.stdout.write(
 							`Downloading WordPress ${percentProgress}%...`
 						);
