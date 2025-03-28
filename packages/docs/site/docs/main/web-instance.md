@@ -15,51 +15,96 @@ Some key features:
 
 Via [Query Params](/developers/apis/query-api/) we can directly load in the Playground instance things such as a specific version of WordPress, a theme, a plugin or a more complex setup via blueprints (check [here](/quick-start-guide#try-a-block-a-theme-or-a-plugin) some examples).
 
-From the Playground website there are also available some toolbars to customize your playground instance and to provide quick access to some resources and utilities.
+WordPress Playground is a browser-based environment that allows users to run WordPress instantly without installation. It is useful for testing, debugging, and exploring WordPress features.
 
-![Playground Toolbar Snapshot](./_assets/toolbar.png)
+The Playground interface consists of three key sections:
 
-## Customize Playground
+-   **Playground Manager**
 
-![snapshot of customize playground window at playground instance](./_assets/customize-playground.png)
+-   **Address Bar**
 
-The options available from the "Customize Playground" window correspond to the following [Query API options](/developers/apis/query-api#available-options):
+-   **Playground Settings**
 
--   `php`
--   `php-extension-bundle`
--   `networking`
--   `wp`
+![Playground Toolbar Snapshot](./_assets/Playground_Toolbar.jpg)
 
-:::tip
+Each of these sections provides essential functionalities for managing the WordPress instance.
 
-You need to activate "Network access" to be able to browse for [plugins](https://w.org/plugins) and [themes](https://w.org/themes) from your WordPress instance.
-:::
+#
 
-## Playground Options Menu
+## 1. Playground Manager
 
-![options menu at playground instance snapshot](./_assets/options.png)
+![Playground Manager Snapshot](./_assets/Playground_Manager.png)
 
-This menu contains links to some Playground resources and tools:
+The Playground Manager offers two key tabs:
 
--   **Reset Site**: - It will wipe out all data and reload the page with a new site.
--   **Report error**: If you have any issue with WP Playground yoy can report it using the form available from this option. You can help resolve issues with Playground by sharing the error details with development team behind Playground.
--   **Download as zip**: It creates a `.zip` with the setup of the Playground instance including any themes or plugins installed. This `.zip` won't include content and database changes.
--   **Restore from zip**: It allows you to recreate a Playground instance using any `.zip` generated with the "Download as zip" option
--   **Import from Github**: This option allows you to import plugins, themes, and wp-content directories directly from your public GitHub repositories. To enable this feature, connect your GitHub account with WordPress Playground.
+### a) Temporary Playground
 
--   **Export Pull Request to GitHub**: This option allows you to export WordPress plugins, themes, and entire wp-content directories as pull requests to any public GitHub repository. Check [here](https://www.youtube.com/watch?v=gKrij8V3nK0&t=2488s) a demo of using this option.
+This section allows users to create a temporary WordPress instance for testing. The available options include:
 
--   **View Logs**: This option will take you to modal that will show any error logs for Playground, WordPress and PHP.
+-   **WordPress Version**: Choose from the latest stable version, release candidates (RC), and older versions.
 
--   **Edit the blueprint**: This option will open the current blueprint used for the Playground instance in the [Blueprints Builder tool](https://playground.wordpress.net/builder/builder.html). From this tool you'll be able to edit the blueprint online and run a new Playground instance with your edited version of the blueprint.
+-   **PHP Version**: Select the PHP version for compatibility testing.
 
-<span id="edit-the-blueprint"></span>
+-   **Language**: Set the WordPress interface language.
 
-[![snapshot of Builder mode of WordPress Playground](./_assets/builder-mode.png)](https://playground.wordpress.net/builder/builder.html)
+-   **Network Access**: Enable or disable internet access for the playground.
 
-:::caution
+-   **Multisite Network**: Activate the multisite functionality to test networked sites.
 
-The site at https://playground.wordpress.net is there to support the community, but there are no guarantees it will continue to work if the traffic grows significantly.
+**Note**: Changes made in the Temporary Playground are lost upon page refresh.
 
-If you need certain availability, you should [host your own WordPress Playground](/developers/architecture/host-your-own-playground).
-:::
+Additionally, users can:
+
+-   **Export to GitHub:** Save the current state of the Playground to a GitHub repository.
+
+-   **Download Site as .zip:** Export the WordPress instance as a zip file.
+
+-   **View Blueprint:** Check the configuration details of the Playground setup.
+
+-   **Report Error:** Submit an issue if something goes wrong.
+
+At the top-right corner, clicking on the three-dot menu reveals options to:
+
+-   **Preview a WordPress PR**
+
+-   **Preview a Gutenberg PR**
+
+-   **Import from GitHub**
+
+-   **Upload a .zip file**
+
+### b) Blueprints Gallery
+
+Blueprints are predefined configurations for setting up WordPress. Users can:
+
+-   Browse available Blueprints from the WordPress Blueprints Gallery.
+
+-   Try them out in Playground.
+
+-   Learn more from the Blueprints documentation.
+
+## 2. Address Bar
+
+The **Address Bar** displays the URL of the current WordPress instance running in Playground. It allows users to:
+
+-   Copy and share the instance URL.
+
+-   Modify query parameters for advanced debugging.
+
+-   Reset the instance to its default state.
+
+## 3. Playground Settings
+
+![Playground Settings Snapshot](./_assets/Playground_Settings.png)
+
+The **Playground Settings** panel contains the same customization options as the Temporary Playground:
+
+**WordPress Version**: Select different WordPress versions, including the latest stable release, release candidates (RC), and older versions.
+
+**PHP Version**: Choose the PHP version for testing compatibility.
+
+**Language**: Change the WordPress interface language.
+
+**Network Access**: Enable or disable network access.
+
+**Multisite Network**: Activate multisite functionality for testing.
