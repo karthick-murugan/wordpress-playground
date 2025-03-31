@@ -13,17 +13,23 @@ Some key features:
 -   **Instant Setup**: Run WordPress with a single click.
 -   **Testing Environment**: Ideal for testing plugins and themes.
 
-Via [Query Params](/developers/apis/query-api/) we can directly load in the Playground instance things such as a specific version of WordPress, a theme, a plugin or a more complex setup via blueprints (check [here](/quick-start-guide#try-a-block-a-theme-or-a-plugin) some examples).
+Via [Query Params](/developers/apis/query-api/) you can directly control the Playground instance. You can assign settings, like WordPress or PHP versions, plugins and theme to install or point to a configuration file called "Blueprint". (check [here](/quick-start-guide#try-a-block-a-theme-or-a-plugin) some examples).
 
 The Playground interface consists of three key sections:
 
--   **Playground Manager**
+-   **Left Navigation**
+
+-   **Middle Section**
+
+-   **Site View**
 
 -   **Address Bar**
 
--   **Playground Settings**
-
 ![Playground Toolbar Snapshot](./_assets/Playground_Toolbar.jpg)
+
+Upon clicking the **Playground Manager** icon you can view the following interface as shown in the screenshot below.
+
+![Playground Interface Snapshot](./_assets/Playground_Interface.png)
 
 Each of these sections provides essential functionalities for managing the WordPress instance.
 
@@ -34,59 +40,83 @@ You need to activate "Network access" to be able to browse for [plugins](https:/
 
 #
 
-## 1. Playground Manager
+## 1. Left Navigation
 
-![Playground Manager Snapshot](./_assets/Playground_Manager.png)
+The **Left Navigation** panel lets you control the overall Playground browser instance. It allows you to:
 
-The Playground Manager offers two key tabs:
+![Left Navigation Snapshot](./_assets/Left_Navigation.png)
 
-### a) Temporary Playground
+-   Manage multiple WordPress sites within the Playground instance.
 
-This section allows users to create a temporary WordPress instance for testing. The available options include:
+-   Switch between saved sites and create new instances.
 
--   **WordPress Version**: Choose from the latest stable version, release candidates (RC), and older versions.
+-   Access four key resource links:
 
--   **PHP Version**: Select the PHP version for compatibility testing.
+    -   [Preview WordPress PR](https://playground.wordpress.net)
+    -   [More demos](https://playground.wordpress.net/demos/index.html)
+    -   [Documentation](https://wordpress.github.io/wordpress-playground/)
+    -   [GitHub](https://github.com/wordpress/wordpress-playground)
 
--   **Language**: Set the WordPress interface language.
+-   Utilize the three-dot menu for additional options:
 
--   **Network Access**: Enable or disable internet access for the playground.
+    -   Preview WordPress PR
+    -   Preview Gutenberg PR
+    -   Import from GitHub
+    -   Import from Zip
 
--   **Multisite Network**: Activate the multisite functionality to test networked sites.
+## 2. Middle Section
 
-**Note**: Changes made in the Temporary Playground are lost upon page refresh.
+![Middle Section Snapshot](./_assets/Middle_Section.png)
 
-Additionally, users can:
+The **Middle Section** displays the currently selected site. If you only have one site, it defaults to the **Temporary Playground**. If multiple sites are saved, this section updates based on the selected site from the **Left Navigation**.
 
--   **Export to GitHub:** Save the current state of the Playground to a GitHub repository.
+The settings displayed here apply only to the active site and are not global Playground settings. The options include:
 
--   **Download Site as .zip:** Export the WordPress instance as a zip file.
+-   **WordPress Version:** Choose from the latest stable version, release candidates (RC), and older versions.
 
--   **View Blueprint:** Check the configuration details of the Playground setup.
+-   **PHP Version:** Select the PHP version for compatibility testing.
 
--   **Report Error:** Submit an issue if something goes wrong.
+-   **Language:** Set the WordPress interface language.
 
-At the top-right corner, clicking on the three-dot menu reveals options to:
+-   **Network Access:** Enable or disable internet access for the site.
 
--   **Preview a WordPress PR**
+-   **Multisite Network:** Activate the multisite functionality to test networked sites.
 
--   **Preview a Gutenberg PR**
+### Temporary Playground Context
 
--   **Import from GitHub**
+-   The first site in the Playground is always called the Temporary Playground by default.
 
--   **Upload a .zip file**
+-   When additional sites are created, the UI name changes according to the selected site.
 
-### b) Blueprints Gallery
+-   Changes made in the **Temporary Playground** are lost upon page refresh.
 
-Blueprints are predefined configurations for setting up WordPress. Users can:
+-   Additional functionalities include:
 
--   Browse available Blueprints from the WordPress Blueprints Gallery.
+    -   **Export to GitHub:** Save the current state of the Playground to a GitHub repository.
 
--   Try them out in Playground.
+    -   **Download Site as .zip:** Export the WordPress instance as a zip file.
 
--   Learn more from the Blueprints documentation.
+    -   **View Blueprint:** Check the configuration details of the Playground setup.
 
-## 2. Address Bar
+    -   **Report Error:** Submit an issue if something goes wrong.
+
+## 3. Site View
+
+![Site View Snapshot](./_assets/Site_View.png)
+
+The **Site View** is a full-screen display of the currently active WordPress instance. It allows users to interact with their WordPress setup in real-time.
+
+-   The view automatically expands to full screen when selected.
+
+-   Users can return to the other Playground sections using:
+
+    -   The **left-side icon** to navigate back to the **Left Navigation**.
+
+    -   The **right-side icon** to return to the **Middle Section**.
+
+## 4. Address Bar
+
+![Address Bar Snapshot](./_assets/Address_Bar.png)
 
 The **Address Bar** displays the URL of the current WordPress instance running in Playground. It allows users to:
 
@@ -96,18 +126,9 @@ The **Address Bar** displays the URL of the current WordPress instance running i
 
 -   Reset the instance to its default state.
 
-## 3. Playground Settings
+:::caution
 
-![Playground Settings Snapshot](./_assets/Playground_Settings.png)
+The site at https://playground.wordpress.net is there to support the community, but there are no guarantees it will continue to work if the traffic grows significantly.
 
-The **Playground Settings** panel contains the same customization options as the Temporary Playground:
-
-**WordPress Version**: Select different WordPress versions, including the latest stable release, release candidates (RC), and older versions.
-
-**PHP Version**: Choose the PHP version for testing compatibility.
-
-**Language**: Change the WordPress interface language.
-
-**Network Access**: Enable or disable network access.
-
-**Multisite Network**: Activate multisite functionality for testing.
+If you need certain availability, you should [host your own WordPress Playground](/developers/architecture/host-your-own-playground).
+:::
