@@ -15,8 +15,6 @@ Some key features:
 
 Via [Query Params](/developers/apis/query-api/) we can directly load in the Playground instance things such as a specific version of WordPress, a theme, a plugin or a more complex setup via blueprints (check [here](/quick-start-guide#try-a-block-a-theme-or-a-plugin) some examples).
 
-WordPress Playground is a browser-based environment that allows users to run WordPress instantly without installation. It is useful for testing, debugging, and exploring WordPress features.
-
 The Playground interface consists of three key sections:
 
 -   **Playground Manager**
@@ -28,6 +26,11 @@ The Playground interface consists of three key sections:
 ![Playground Toolbar Snapshot](./_assets/Playground_Toolbar.jpg)
 
 Each of these sections provides essential functionalities for managing the WordPress instance.
+
+:::tip
+
+You need to activate "Network access" to be able to browse for [plugins](https://w.org/plugins) and [themes](https://w.org/themes) from your WordPress instance.
+:::
 
 #
 
