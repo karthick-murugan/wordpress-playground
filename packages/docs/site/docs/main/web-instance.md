@@ -7,7 +7,7 @@ slug: /web-instance
 
 [https://playground.wordpress.net/](https://playground.wordpress.net/) is a versatile web tool that allows developers to run WordPress in a browser without needing a server. This environment is particularly useful for testing plugins, themes, and other WordPress features quickly and efficiently.
 
-Some key features:
+Key features:
 
 -   **Browser-based**: No need for a local server setup.
 -   **Instant Setup**: Run WordPress with a single click.
@@ -65,8 +65,6 @@ The **Left Navigation** panel lets you control the overall Playground browser in
     -   Import from Zip
 
 ## 2. Middle Section
-
-![Middle Section Snapshot](./_assets/Middle_Section.png)
 
 The **Middle Section** displays the currently selected site. If you only have one site, it defaults to the **Temporary Playground**. If multiple sites are saved, this section updates based on the selected site from the **Left Navigation**.
 
