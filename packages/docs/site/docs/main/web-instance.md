@@ -17,11 +17,11 @@ Via [Query Params](/developers/apis/query-api/) you can directly control the Pla
 
 The Playground interface consists of three key sections:
 
--   **Left Navigation**
+-   **Site Explorer**
 
--   **Middle Section**
+-   **Workspace & Settings**
 
--   **Site View**
+-   **Site Preview**
 
 -   **Address Bar**
 
@@ -40,11 +40,11 @@ You need to activate "Network access" to be able to browse for [plugins](https:/
 
 #
 
-## 1. Left Navigation
+## 1. Site Explorer
 
-The **Left Navigation** panel lets you control the overall Playground browser instance. It allows you to:
+The **Site Explorer** panel lets you control the overall Playground browser instance. It allows you to:
 
-![Left Navigation Snapshot](./_assets/Left_Navigation.png)
+![Site Explorer Snapshot](./_assets/Site_Explorer.png)
 
 -   Manage multiple WordPress sites within the Playground instance.
 
@@ -64,9 +64,9 @@ The **Left Navigation** panel lets you control the overall Playground browser in
     -   Import from GitHub
     -   Import from Zip
 
-## 2. Middle Section
+## 2. Workspace & Settings
 
-The **Middle Section** displays the currently selected site. If you only have one site, it defaults to the **Temporary Playground**. If multiple sites are saved, this section updates based on the selected site from the **Left Navigation**.
+The **Workspace & Settings** displays the currently selected site. If you only have one site, it defaults to the **Temporary Playground**. If multiple sites are saved, this section updates based on the selected site from the **Site Explorer**.
 
 The settings displayed here apply only to the active site and are not global Playground settings. The options include:
 
@@ -98,19 +98,19 @@ The settings displayed here apply only to the active site and are not global Pla
 
     -   **Report Error:** Submit an issue if something goes wrong.
 
-## 3. Site View
+## 3. Site Preview
 
-![Site View Snapshot](./_assets/Site_View.png)
+![Site Preview Snapshot](./_assets/Site_Preview.png)
 
-The **Site View** is a full-screen display of the currently active WordPress instance. It allows users to interact with their WordPress setup in real-time.
+The **Site Preview** is a full-screen display of the currently active WordPress instance. It allows users to interact with their WordPress setup in real-time.
 
 -   The view automatically expands to full screen when selected.
 
 -   Users can return to the other Playground sections using:
 
-    -   The **left-side icon** to navigate back to the **Left Navigation**.
+    -   The **left-side icon** to navigate back to the **Site Explorer**.
 
-    -   The **right-side icon** to return to the **Middle Section**.
+    -   The **right-side icon** to return to the **Workspace & Settings**.
 
 ## 4. Address Bar
 
