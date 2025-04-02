@@ -25,7 +25,7 @@ The Playground interface consists of three key sections:
 
 -   **Address Bar**
 
-![Playground Toolbar Snapshot](./_assets/Playground_Toolbar.jpg)
+![Playground Toolbar Snapshot](./_assets/Playground_Toolbar.png)
 
 Upon clicking the **Playground Manager** icon you can view the following interface as shown in the screenshot below.
 
