@@ -15,6 +15,18 @@ if (file_exists($config_file)) {
 $server_host = $_SERVER['HTTP_HOST'] ?? '';
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
+// Define allowlist of Content-Types
+$allowed_content_types = [
+    'application/json',
+    'application/xml',
+    'application/rss+xml',
+    'application/atom+xml',
+    'text/html',
+    'text/plain',
+    'text/xml',
+    // Add more as needed
+];
+
 if (should_respond_with_cors_headers($server_host, $origin)) {
     header('Access-Control-Allow-Origin: ' . $origin);
     header('Access-Control-Allow-Credentials: true');
@@ -149,7 +161,7 @@ $curlHeaders = kv_headers_to_curl_format(
     filter_headers_by_name(
         getallheaders(),
         $strictly_disallowed_headers,
-        $headers_requiring_opt_in,
+        $headers_requiring_opt_in
     )
 );
 curl_setopt(
@@ -181,7 +193,7 @@ curl_setopt(
     ) use (
         $targetUrl,
         $relay_http_code_and_initial_headers_if_not_already_sent,
-        &$is_chunked_response
+        &$is_chunked_response, $allowed_content_types
     ) {
         @$relay_http_code_and_initial_headers_if_not_already_sent();
 
@@ -204,6 +216,24 @@ curl_setopt(
             }
             return $len;
         }
+
+        // Check if Content-Type is allowed
+        if ($name === 'content-type') {
+            $mimeType = strtolower(trim(explode(';', $value)[0])); // Normalize and strip charset
+        
+            // If not in allowlist, check for special case
+            if (!in_array($mimeType, $allowed_content_types, true)) {
+                // Special case: allow application/octet-stream for .zip files
+                $parsed_url = parse_url($targetUrl);
+                $path = $parsed_url['path'] ?? '';
+        
+                if ($mimeType !== 'application/octet-stream' && !str_ends_with($path, '.zip')) {
+                    http_response_code(415); // Unsupported Media Type
+                    send_response_chunk("Unsupported Content-Type: $mimeType");
+                    exit;
+                }
+            }
+        }        
 
         if ($name === 'transfer-encoding' && stripos($value, 'chunked') !== false) {
             $is_chunked_response = true;
