@@ -5,15 +5,12 @@
 		"default": {
 			"runner": "nx/tasks-runners/default",
 			"options": {
-				"cacheableOperations": ["build", "lint", "test", "e2e"]
+				"cacheableOperations": ["build", "lint", "test", "e2e"],
+				"accessToken": "ZjUyOWIwZjYtYjc1Ni00ZGUwLWE5MzAtNTU5OWFkN2RjNDEzfHJlYWQtd3JpdGU="
 			}
 		}
 	},
-	"pluginsConfig": {
-		"@nx/js": {
-			"analyzeSourceFiles": true
-		}
-	},
+	"pluginsConfig": { "@nx/js": { "analyzeSourceFiles": true } },
 	"targetDefaults": {
 		"build": {
 			"dependsOn": ["^build"],
@@ -33,9 +30,7 @@
 				"{workspaceRoot}/jest.preset.js"
 			]
 		},
-		"e2e": {
-			"inputs": ["default", "^production"]
-		}
+		"e2e": { "inputs": ["default", "^production"] }
 	},
 	"namedInputs": {
 		"default": ["{projectRoot}/**/*", "sharedGlobals"],
@@ -49,10 +44,7 @@
 		],
 		"sharedGlobals": []
 	},
-	"workspaceLayout": {
-		"appsDir": "packages",
-		"libsDir": "packages"
-	},
+	"workspaceLayout": { "appsDir": "packages", "libsDir": "packages" },
 	"generators": {
 		"@nx/react": {
 			"application": {
@@ -61,13 +53,8 @@
 				"bundler": "vite",
 				"babel": true
 			},
-			"component": {
-				"style": "css"
-			},
-			"library": {
-				"style": "css",
-				"linter": "eslint"
-			}
+			"component": { "style": "css" },
+			"library": { "style": "css", "linter": "eslint" }
 		}
 	}
 }
