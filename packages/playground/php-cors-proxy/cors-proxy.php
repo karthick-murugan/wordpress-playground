@@ -221,17 +221,17 @@ curl_setopt(
         if ($name === 'content-type') {
             $mimeType = strtolower(trim(explode(';', $value)[0])); // Normalize and strip charset
         
-            // If not in allowlist, check for special case
-            if (!in_array($mimeType, $allowed_content_types, true)) {
-                // Special case: allow application/octet-stream for .zip files
-                $parsed_url = parse_url($targetUrl);
-                $path = $parsed_url['path'] ?? '';
+            $isGitContent = str_starts_with($mimeType, 'application/x-git-');
         
-                if ($mimeType !== 'application/octet-stream' && !str_ends_with($path, '.zip')) {
-                    http_response_code(415); // Unsupported Media Type
-                    send_response_chunk("Unsupported Content-Type: $mimeType");
-                    exit;
-                }
+            // If not in allowlist and not a special case, block it
+            if (
+                !in_array($mimeType, $allowed_content_types, true) &&
+                $mimeType !== 'application/octet-stream' &&
+                !$isGitContent
+            ) {
+                http_response_code(415); // Unsupported Media Type
+                send_response_chunk("Unsupported Content-Type: $mimeType");
+                exit;
             }
         }        
 
