@@ -614,12 +614,12 @@ export async function resolveWordPressRelease(versionQuery = 'latest') {
 			version: 'custom-' + sha1.substring(0, 8),
 			source: 'inferred',
 		};
-	} else if (versionQuery === 'trunk' || versionQuery === 'nightly') {
+	} else if (versionQuery === 'trunk') {
 		return {
 			releaseUrl:
-				'https://wordpress.org/nightly-builds/wordpress-latest.zip',
-			version: 'nightly-' + new Date().toISOString().split('T')[0],
-			source: 'inferred',
+				'https://github.com/WordPress/wordpress-develop/archive/refs/heads/trunk.zip',
+			version: 'trunk-' + new Date().toISOString().split('T')[0],
+			source: 'github',
 		};
 	}
 

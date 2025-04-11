@@ -113,10 +113,19 @@ export function UnconnectedSiteSettingsForm({
 										},
 										...Object.keys(
 											supportedWPVersions || {}
-										).map((version) => ({
-											label: `${supportedWPVersions[version]}`,
-											value: version,
-										})),
+										).map((version) => {
+											const label =
+												version === 'nightly'
+													? 'trunk'
+													: supportedWPVersions[
+															version
+													  ];
+											const value =
+												version === 'nightly'
+													? 'trunk'
+													: version;
+											return { label, value };
+										}),
 									]
 								}
 								onChange={(value, extra) => {
