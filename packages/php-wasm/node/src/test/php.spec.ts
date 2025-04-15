@@ -1584,7 +1584,7 @@ describe.each(SupportedPHPVersions)('PHP %s', (phpVersion) => {
 				addr: number,
 				...args: any
 			) {
-				const retval = free.call(this, name, ...args);
+				const retval = free.call(this, ...args);
 				if (addr === bodyPtr) {
 					php[__private__dont__use].HEAPU8.fill(
 						0,

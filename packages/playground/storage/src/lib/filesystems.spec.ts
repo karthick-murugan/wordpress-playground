@@ -326,7 +326,7 @@ describe('FetchFilesystem', () => {
 	it('should throw an error if the base URL is not a valid URL', () => {
 		expect(
 			() => new FetchFilesystem({ baseUrl: 'not-a-valid-url' })
-		).toThrow('Invalid base URL');
+		).toThrow('Invalid URL');
 	});
 
 	it('should refuse to read a file outside of the base URL', async () => {

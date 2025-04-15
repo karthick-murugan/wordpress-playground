@@ -198,10 +198,13 @@ export class PHPRequestHandler {
 	constructor(config: PHPRequestHandlerConfiguration) {
 		const {
 			documentRoot = '/www/',
-			absoluteUrl = typeof location === 'object' ? location?.href : '',
+			absoluteUrl = typeof location === 'object'
+				? location.href
+				: DEFAULT_BASE_URL,
 			rewriteRules = [],
 			getFileNotFoundAction = () => ({ type: '404' }),
 		} = config;
+
 		if ('processManager' in config) {
 			this.processManager = config.processManager;
 		} else {
