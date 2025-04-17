@@ -23,6 +23,7 @@ const sidebars = {
 			items: [
 				'main/quick-start-guide',
 				'main/web-instance',
+				'main/how-to-create-a-theme-using-playground',
 				{
 					type: 'category',
 					label: 'About Playground',
