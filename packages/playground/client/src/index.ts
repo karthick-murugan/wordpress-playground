@@ -222,3 +222,12 @@ function setQueryParams(url: string, params: Record<string, unknown>) {
 	urlObject.search = qs.toString();
 	return urlObject.toString();
 }
+
+// Add beforeunload event listener to warn about unsaved changes
+window.addEventListener('beforeunload', (event) => {
+    // You might want to add conditions here to only show when there are actual changes
+    // For now, we'll show it for all page exits
+    event.preventDefault();
+    event.returnValue = ''; // Required for Chrome
+    return ''; // Required for some other browsers
+});
