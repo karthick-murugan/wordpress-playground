@@ -8,7 +8,7 @@ export type SiteError =
 	// @TODO: Improve name?
 	| 'site-boot-failed';
 
-export type SiteManagerSection = 'sidebar' | 'site-details' | 'blueprints';
+export type SiteManagerSection = 'sidebar' | 'site-details' | 'blueprints' | 'playground-demos';
 export interface UIState {
 	activeSite?: {
 		slug: string;

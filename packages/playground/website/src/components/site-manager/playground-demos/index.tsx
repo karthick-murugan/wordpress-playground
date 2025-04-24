@@ -26,7 +26,7 @@ export const PlaygroundDemos = () => {
 			],
 		};
 
-		const link = document.getElementById('code-editor');
+		const link = document.getElementById('code-editor') as HTMLAnchorElement;
 		if (link) {
 			link.href = `../#${JSON.stringify(codeEditorBlueprint)}`;
 		}
