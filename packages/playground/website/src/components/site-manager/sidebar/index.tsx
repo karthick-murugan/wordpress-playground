@@ -62,10 +62,6 @@ export function Sidebar({
 			href: '/wordpress.html',
 		},
 		{
-			label: 'More demos',
-			href: '/demos/index.html',
-		},
-		{
 			label: 'Documentation',
 			href: 'https://wordpress.github.io/wordpress-playground/',
 		},
@@ -197,6 +193,36 @@ export function Sidebar({
 							</Flex>
 							<FlexBlock className={css.sidebarItemSiteName}>
 								Blueprints Gallery
+							</FlexBlock>
+						</HStack>
+					</MenuItem>
+					<MenuItem
+						className={classNames(css.sidebarItem, {
+							[css.sidebarItemSelected]:
+								activeSiteManagerSection === 'playground-demos',
+						})}
+						onClick={() =>
+							dispatch(setSiteManagerSection('playground-demos'))
+						}
+						isSelected={
+							activeSiteManagerSection === 'playground-demos'
+						}
+					>
+						<HStack justify="flex-start" alignment="center">
+							<Flex
+								style={{
+									width: 24,
+								}}
+								align="center"
+								justify="center"
+							>
+								<Icon
+									icon={page}
+									className={css.sidebarItemLogo}
+								/>
+							</Flex>
+							<FlexBlock className={css.sidebarItemSiteName}>
+								Playground Demos
 							</FlexBlock>
 						</HStack>
 					</MenuItem>

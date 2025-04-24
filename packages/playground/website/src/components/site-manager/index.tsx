@@ -13,6 +13,7 @@ import classNames from 'classnames';
 import { forwardRef } from 'react';
 import { setSiteManagerOpen } from '../../lib/state/redux/slice-ui';
 import { BlueprintsPanel } from './blueprints-panel';
+import { PlaygroundDemos } from './playground-demos';
 
 export const SiteManager = forwardRef<
 	HTMLDivElement,
@@ -60,6 +61,11 @@ export const SiteManager = forwardRef<
 					mobileUi={fullScreenSections}
 				/>
 			) : null;
+			break;
+		case 'playground-demos':
+			activePanel = (
+				<PlaygroundDemos />
+			);
 			break;
 		default:
 			activePanel = null;
