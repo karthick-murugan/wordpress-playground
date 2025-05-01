@@ -3,8 +3,14 @@
 // this code in Node.js as an ES module.
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const __dirname = new URL('.', import.meta.url).pathname;
-const dependencyFilename = __dirname + '/8_2_10/php_8_2.wasm';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+import path from 'path';
+const dependencyFilename = path.join(__dirname, '8_2_10', 'php_8_2.wasm');
 export { dependencyFilename };
 export const dependenciesTotalSize = 14936153;
 export function init(RuntimeName, PHPLoader) {
