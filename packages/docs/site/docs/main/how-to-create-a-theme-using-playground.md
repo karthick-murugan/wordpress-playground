@@ -52,6 +52,8 @@ Install the following plugins for theme development:
 -   [Gutenberg](https://wordpress.org/plugins/gutenberg/)
 -   [Theme Check](https://wordpress.org/plugins/theme-check/)
 
+Directly use playground links to load plugins: https://playground.wordpress.net/#%7B%22plugins%22:%5B%22hello-dolly%22,%22gutenberg%22%5D,%20%22login%22:%20true,%20%22landingPage%22:%20%22/wp-admin/plugins.php%22%20%7D
+
 ### Install via WP Admin
 
 Navigate to:
@@ -72,15 +74,10 @@ Starter themes give you a foundation to begin building your WordPress theme. The
 
 You can load a GitHub-hosted theme directly in WordPress Playground using a URL parameter.
 
-**Format:**
-
-?theme=https://github.com/username/repository/archive/refs/heads/main.zip
-
 **Example:**
 
-https://playground.wordpress.net/?theme=https://github.com/WordPress/block-canvas/archive/refs/heads/trunk.zip
+https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/WordPress/blueprints/refs/heads/trunk/blueprints/install-activate-setup-theme-from-gh-repo/blueprint.json
 
-This loads the [Block Canvas](https://github.com/WordPress/block-canvas) theme directly into Playground for development and customization.
 
 ### 📦 Option 2: Upload from ZIP
 
@@ -138,18 +135,7 @@ For advanced workflows:
 
 ---
 
-## ✅ 7. Review and Adjust the Theme
-
-You can import your saved or exported theme back into Playground anytime:
-
--   Use the `?theme=URL_TO_ZIP` parameter
--   Or manually upload from **Appearance > Themes**
-
-This allows for peer reviews or continued development.
-
----
-
-## 📥 8. Import from a GitHub Pull Request
+## 📥 7. Import from a GitHub Pull Request
 
 You can even test themes from a specific pull request:
 
@@ -158,6 +144,16 @@ You can even test themes from a specific pull request:
 ?theme=https://github.com/username/repository/compare/feature-branch.zip
 
 Or use GitHub actions to create a ZIP from a PR and link it in Playground.
+
+---
+
+## 🔷 Blueprint URL for Creating a Block Theme
+
+You can quickly create a block theme in Playground by using a blueprint URL. For example, opening the URL below automatically loads the blueprint for a block theme:
+
+https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/WordPress/blueprints/refs/heads/trunk/blueprints/create-block-theme/blueprint.json
+
+Simply paste this URL into your browser or use it when launching a new site in Playground to get started with a preconfigured block theme setup.
 
 ---
 
