@@ -9,6 +9,20 @@ All notable changes to this project are documented in this file by a CI job
 that runs on every NPM release. The file follows the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 format.
 
+## [v1.0.37] (2025-05-15) 
+
+### Various
+
+- Define `DB_NAME` constant when it's missing. ([#140](https://github.com/Automattic/wordpress-playground-private/pull/140))
+- Support limiting files added to self-hosted packages. ([#149](https://github.com/Automattic/wordpress-playground-private/pull/149))
+
+### Contributors
+
+The following contributors merged PRs in this release:
+
+@brandonpayton @JanJakes
+
+
 ## [v1.0.36] (2025-05-08) 
 
 ### Various
