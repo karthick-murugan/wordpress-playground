@@ -9,7 +9,7 @@ import { getExternalModules } from '../../vite-extensions/vite-external-modules'
 
 const path = (filename: string) => new URL(filename, import.meta.url).pathname;
 export default defineConfig({
-	assetsInclude: ['**/*.wasm', '**/*.dat', '*.zip'],
+	assetsInclude: ['**/*.wasm', '*.zip'],
 	cacheDir: '../../../node_modules/.vite/playground-wordpress',
 	plugins: [
 		viteTsConfigPaths({

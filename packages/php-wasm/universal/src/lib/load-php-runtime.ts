@@ -121,16 +121,14 @@ let lastRuntimeId = 0;
  *
  * @public
  * @param  phpLoaderModule         - The ESM-wrapped Emscripten module. Consult the Dockerfile for the build process.
- * @param  options                 - The Emscripten module arguments, see https://emscripten.org/docs/api_reference/module.html#affecting-execution.
+ * @param  phpModuleArgs           - The Emscripten module arguments, see https://emscripten.org/docs/api_reference/module.html#affecting-execution.
  * @returns Loaded runtime id.
  */
 
 export async function loadPHPRuntime(
 	phpLoaderModule: PHPLoaderModule,
-	...options: EmscriptenOptions[]
+	phpModuleArgs: EmscriptenOptions = {}
 ): Promise<number> {
-	const phpModuleArgs = Object.assign({}, ...options);
-
 	const [phpReady, resolvePHP, rejectPHP] = makePromise();
 
 	const PHPRuntime = phpLoaderModule.init(currentJsRuntime, {
