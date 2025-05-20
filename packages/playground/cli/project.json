@@ -92,19 +92,10 @@
 		},
 		"test": {
 			"executor": "@nx/vite:test",
-			"outputs": ["{workspaceRoot}/coverage/playground/cli"],
+			"outputs": ["{workspaceRoot}/coverage/packages/playground/cli"],
 			"options": {
 				"passWithNoTests": true,
-				"reportsDirectory": "../../../coverage/packages/playground/cli",
-				"typecheck": {
-					"tsconfig": "{projectRoot}/tsconfig.spec.json"
-				}
-			},
-			"configurations": {
-				"ci": {
-					"ci": true,
-					"codeCoverage": true
-				}
+				"reportsDirectory": "../../../coverage/packages/playground/cli"
 			}
 		},
 		"typecheck": {

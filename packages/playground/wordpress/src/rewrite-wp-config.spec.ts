@@ -1,12 +1,11 @@
 import { PHP } from '@php-wasm/universal';
-import {
-	defineWpConfigConstants,
-	ensureRequiredWpConfigConstants,
-} from './rewrite-wp-config';
+import { defineWpConfigConstants, ensureWpConfig } from './rewrite-wp-config';
 import { RecommendedPHPVersion } from '@wp-playground/common';
 import { loadNodeRuntime } from '@php-wasm/node';
+import { joinPaths } from '@php-wasm/util';
 
-const wpConfigPath = '/tmp/wp-config.php';
+const documentRoot = '/tmp';
+const wpConfigPath = joinPaths(documentRoot, 'wp-config.php');
 
 describe('defineWpConfigConstants', () => {
 	let php: PHP;
@@ -237,7 +236,7 @@ echo json_encode([
 	});
 });
 
-describe('ensureRequiredWpConfigConstants', () => {
+describe('ensureWpConfig', () => {
 	let php: PHP;
 	beforeEach(async () => {
 		php = new PHP(await loadNodeRuntime(RecommendedPHPVersion));
@@ -245,7 +244,7 @@ describe('ensureRequiredWpConfigConstants', () => {
 
 	it('should define required constants if they are not defined', async () => {
 		php.writeFile(wpConfigPath, '<?php');
-		await ensureRequiredWpConfigConstants(php, wpConfigPath);
+		await ensureWpConfig(php, documentRoot);
 
 		const rewritten = php.readFileAsText(wpConfigPath);
 		expect(rewritten).toContain(`define('DB_NAME','wordpress');`);
@@ -258,7 +257,7 @@ describe('ensureRequiredWpConfigConstants', () => {
 		define('DB_USER','user');
 		`
 		);
-		await ensureRequiredWpConfigConstants(php, wpConfigPath);
+		await ensureWpConfig(php, documentRoot);
 
 		const rewritten = php.readFileAsText(wpConfigPath);
 		expect(rewritten).toContain(`define('DB_NAME','wordpress');`);
@@ -271,7 +270,7 @@ describe('ensureRequiredWpConfigConstants', () => {
 		define('DB_NAME','already-defined');
 		`
 		);
-		await ensureRequiredWpConfigConstants(php, wpConfigPath);
+		await ensureWpConfig(php, documentRoot);
 
 		const rewritten = php.readFileAsText(wpConfigPath);
 		expect(rewritten).not.toContain(`define('DB_NAME','wordpress');`);

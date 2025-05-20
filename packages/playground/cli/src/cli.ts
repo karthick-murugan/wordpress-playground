@@ -98,6 +98,11 @@ async function run() {
 			type: 'boolean',
 			default: false,
 		})
+		.option('autoMount', {
+			describe: `Automatically mount the current working directory. You can mount a WordPress directory, a plugin directory, a theme directory, a wp-content directory, or any directory containing PHP and HTML files.`,
+			type: 'boolean',
+			default: false,
+		})
 		.option('followSymlinks', {
 			describe:
 				'Allow Playground to follow symlinks by automatically mounting symlinked directories and files encountered in mounted directories. \nWarning: Following symlinks will expose files outside mounted directories to Playground and could be a security risk.',
@@ -139,7 +144,7 @@ async function run() {
 	} as RunCLIArgs;
 
 	try {
-		return await runCLI(cliArgs);
+		return runCLI(cliArgs);
 	} catch (e) {
 		const reportableCause = ReportableError.getReportableCause(e);
 		if (reportableCause) {

@@ -12,7 +12,11 @@ import type {
 	BlueprintDeclaration,
 	BlueprintBundle,
 } from '@wp-playground/blueprints';
-import { compileBlueprint, runBlueprintSteps } from '@wp-playground/blueprints';
+import {
+	compileBlueprint,
+	runBlueprintSteps,
+	isBlueprintBundle,
+} from '@wp-playground/blueprints';
 import { RecommendedPHPVersion, zipDirectory } from '@wp-playground/common';
 import {
 	bootWordPress,
@@ -22,6 +26,7 @@ import fs from 'fs';
 import type { Server } from 'http';
 import path from 'path';
 import { rootCertificates } from 'tls';
+import { expandAutoMounts } from './cli-auto-mount';
 import {
 	CACHE_FOLDER,
 	cachedDownload,
@@ -44,6 +49,7 @@ export interface RunCLIArgs {
 	skipWordPressSetup?: boolean;
 	skipSqliteSetup?: boolean;
 	wp?: string;
+	autoMount?: boolean;
 	followSymlinks?: boolean;
 }
 
@@ -53,6 +59,14 @@ export interface RunCLIServer {
 }
 
 export async function runCLI(args: RunCLIArgs): Promise<RunCLIServer> {
+	/**
+	 * Expand auto-mounts to include the necessary mounts and steps
+	 * when running in auto-mount mode.
+	 */
+	if (args.autoMount) {
+		args = expandAutoMounts(args);
+	}
+
 	/**
 	 * TODO: This exact feature will be provided in the PHP Blueprints library.
 	 *       Let's use it when it ships. Let's also use it in the web Playground
@@ -112,21 +126,24 @@ export async function runCLI(args: RunCLIArgs): Promise<RunCLIServer> {
 		 * 		 Also the Blueprint Builder tool does something similar.
 		 *       Perhaps all these cases could be handled by the same function?
 		 */
-		let blueprint: BlueprintDeclaration | BlueprintBundle | undefined;
-
-		if (args.blueprint) {
-			blueprint = args.blueprint as
-				| BlueprintDeclaration
-				| BlueprintBundle;
-		} else {
-			blueprint = {
-				preferredVersions: {
-					php: args.php ?? RecommendedPHPVersion,
-					wp: args.wp ?? 'latest',
-				},
-				login: args.login,
-			};
-		}
+		const blueprint: BlueprintDeclaration | BlueprintBundle =
+			isBlueprintBundle(args.blueprint)
+				? args.blueprint
+				: {
+						login: args.login,
+						...args.blueprint,
+						preferredVersions: {
+							php:
+								args.php ??
+								args?.blueprint?.preferredVersions?.php ??
+								RecommendedPHPVersion,
+							wp:
+								args.wp ??
+								args?.blueprint?.preferredVersions?.wp ??
+								'latest',
+							...(args.blueprint?.preferredVersions || {}),
+						},
+				  };
 
 		const tracker = new ProgressTracker();
 		let lastCaption = '';

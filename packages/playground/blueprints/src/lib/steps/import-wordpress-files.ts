@@ -2,7 +2,7 @@ import type { StepHandler } from '.';
 import { unzip } from './unzip';
 import { dirname, joinPaths, phpVar } from '@php-wasm/util';
 import type { UniversalPHP } from '@php-wasm/universal';
-import { ensureRequiredWpConfigConstants } from '@wp-playground/wordpress';
+import { ensureWpConfig } from '@wp-playground/wordpress';
 import { wpContentFilesExcludedFromExport } from '../utils/wp-content-files-excluded-from-exports';
 import { defineSiteUrl } from './define-site-url';
 
@@ -111,10 +111,7 @@ export const importWordPressFiles: StepHandler<
 	await playground.rmdir(importPath);
 
 	// Ensure required constants are defined in wp-config.php.
-	await ensureRequiredWpConfigConstants(
-		playground,
-		joinPaths(documentRoot, 'wp-config.php')
-	);
+	await ensureWpConfig(playground, documentRoot);
 
 	// Adjust the site URL
 	await defineSiteUrl(playground, {
