@@ -83,6 +83,11 @@ export interface StartPlaygroundOptions {
 	 * your Blueprint to replace all cross-origin URLs with the proxy URL.
 	 */
 	corsProxy?: string;
+	/**
+	 * The version of the SQLite driver to use.
+	 * Defaults to the latest development version.
+	 */
+	sqliteDriverVersion?: string;
 }
 
 /**
@@ -106,6 +111,7 @@ export async function startPlaygroundWeb({
 	scope,
 	corsProxy,
 	shouldInstallWordPress,
+	sqliteDriverVersion,
 }: StartPlaygroundOptions): Promise<PlaygroundClient> {
 	assertLikelyCompatibleRemoteOrigin(remoteUrl);
 	allowStorageAccessByUserActivation(iframe);
@@ -150,6 +156,7 @@ export async function startPlaygroundWeb({
 		wpVersion: compiled.versions.wp,
 		withNetworking: compiled.features.networking,
 		corsProxyUrl: corsProxy,
+		sqliteDriverVersion,
 	});
 	await playground.isReady();
 	downloadPHPandWP.finish();
