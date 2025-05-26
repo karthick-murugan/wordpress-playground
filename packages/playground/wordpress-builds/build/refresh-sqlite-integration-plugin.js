@@ -41,6 +41,9 @@ try {
 // Download the plugin.
 const outputZipPath = `${args.outputDir}/sqlite-database-integration-${version}.zip`;
 const sqliteResponse = await fetch(url);
+if (!sqliteResponse.ok) {
+	throw new Error(`Failed to download SQLite integration plugin: ${sqliteResponse.statusText}`);
+}
 const sqliteZip = Buffer.from(await sqliteResponse.arrayBuffer());
 await fs.writeFile(outputZipPath, sqliteZip);
 
