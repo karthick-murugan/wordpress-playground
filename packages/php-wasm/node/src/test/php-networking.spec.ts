@@ -28,7 +28,7 @@ describe.each(SupportedPHPVersions)(
 					resolve(_server);
 				});
 			});
-			server.shut;
+
 			return 'http://127.0.0.1:' + server.address().port;
 		}
 		async function stopServer(server: any) {
