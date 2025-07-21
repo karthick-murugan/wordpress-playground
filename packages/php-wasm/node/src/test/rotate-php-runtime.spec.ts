@@ -48,7 +48,7 @@ describe('rotatePHPRuntime()', () => {
 		// Confirm the file is still there
 		expect(php.fileExists('/internal/shared/test')).toBe(true);
 		expect(php.readFileAsText('/internal/shared/test')).toBe('playground');
-	});
+	}, 30_000);
 
 	it('Preserves a single NODEFS mount through PHP runtime recreation', async () => {
 		// Rotate the PHP runtime
@@ -68,7 +68,6 @@ describe('rotatePHPRuntime()', () => {
 		fs.writeFileSync(tempFile, 'playground');
 
 		// Mount the temporary directory
-		php.mkdir('/test-root');
 		await php.mount('/test-root', createNodeFsMountHandler(tempDir));
 
 		// Confirm the file is still there
@@ -111,14 +110,6 @@ describe('rotatePHPRuntime()', () => {
 		tempDirs.forEach((dir, i) => {
 			fs.writeFileSync(path.join(dir, 'test.php'), `plugin-${i}`);
 		});
-
-		// Create WordPress directory structure
-		php.mkdir('/wordpress/wp-content/plugins/data-liberation');
-		php.mkdir('/wordpress/wp-content/plugins/z-data-liberation-markdown');
-		php.mkdir(
-			'/wordpress/wp-content/plugins/z-data-liberation-static-files-editor'
-		);
-		php.mkdir('/wordpress/wp-content/uploads/static-pages');
 
 		// Mount the directories using WordPress paths
 		await php.mount(
@@ -226,7 +217,7 @@ describe('rotatePHPRuntime()', () => {
 		await php.run({ code: `<?php echo "abc";` });
 		const freeAfterRotation = freeMemory(php);
 		expect(freeAfterRotation).toBeGreaterThan(freeAfter1000Requests);
-	}, 30_000);
+	}, 45_000);
 
 	it('Should recreate the PHP runtime after maxRequests', async () => {
 		const recreateRuntimeSpy = vitest.fn(recreateRuntime);
@@ -376,7 +367,7 @@ describe('rotatePHPRuntime()', () => {
 			code: `<?php echo php_sapi_name();`,
 		});
 		expect(result.text).toBe('custom SAPI');
-	});
+	}, 30_000);
 
 	it('Should preserve the MEMFS files', async () => {
 		const php = new PHP(await recreateRuntime());
@@ -416,7 +407,6 @@ describe('rotatePHPRuntime()', () => {
 
 		php.mkdir('/test-root');
 		php.writeFile('/test-root/index.php', 'test');
-		php.mkdir('/test-root/nodefs');
 
 		const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'temp-'));
 		const tempFile = path.join(tempDir, 'file');

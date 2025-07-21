@@ -6,10 +6,15 @@
  * @see https://github.com/emscripten-core/emscripten/blob/38eedc630f17094b3202fd48ac0c2c585dbea31e/system/include/wasi/api.h#L336
  */
 
-export interface ErrnoError extends Error {
+export class ErrnoError extends Error {
+	constructor(errno: number, message?: string, options?: any) {
+		super(message, options);
+		this.name = 'ErrnoError';
+		this.errno = errno;
+	}
+
 	node?: any;
 	errno: number;
-	message: string;
 }
 /**
  * @see https://github.com/emscripten-core/emscripten/blob/38eedc630f17094b3202fd48ac0c2c585dbea31e/system/include/wasi/api.h#L336
@@ -102,15 +107,11 @@ export function getEmscriptenFsError(e: any) {
 }
 
 export function rethrowFileSystemError(messagePrefix = '') {
-	return function catchFileSystemError(
-		target: any,
-		methodName: string,
-		descriptor: PropertyDescriptor
-	) {
-		const method = descriptor.value;
-		descriptor.value = function (...args: any[]) {
+	return function catchFileSystemError(value: (...args: any[]) => any) {
+		return function (...args: any[]) {
 			try {
-				return method.apply(this, args);
+				// @ts-expect-error Parameter 'this' implicitly has an 'any' type.ts(7006)
+				return value.apply(this, args);
 			} catch (e) {
 				const errno =
 					typeof e === 'object' ? ((e as any)?.errno as any) : null;
@@ -121,9 +122,13 @@ export function rethrowFileSystemError(messagePrefix = '') {
 						path !== null
 							? messagePrefix.replaceAll('{path}', path)
 							: messagePrefix;
-					throw new Error(`${formattedPrefix}: ${errmsg}`, {
-						cause: e,
-					});
+					throw new ErrnoError(
+						errno,
+						`${formattedPrefix}: ${errmsg}`,
+						{
+							cause: e,
+						}
+					);
 				}
 
 				throw e;

@@ -1,5 +1,6 @@
-import { Emscripten } from './emscripten-types';
+import type { Emscripten } from './emscripten-types';
 import {
+	ErrnoError,
 	getEmscriptenFsError,
 	rethrowFileSystemError,
 } from './rethrow-file-system-error';
@@ -31,7 +32,6 @@ export class FSHelpers {
 	 * @param  path - The file path to read.
 	 * @returns The file contents.
 	 */
-	@rethrowFileSystemError('Could not read "{path}"')
 	static readFileAsText(FS: Emscripten.RootFS, path: string) {
 		return new TextDecoder().decode(FSHelpers.readFileAsBuffer(FS, path));
 	}
@@ -44,7 +44,6 @@ export class FSHelpers {
 	 * @param  path - The file path to read.
 	 * @returns The file contents.
 	 */
-	@rethrowFileSystemError('Could not read "{path}"')
 	static readFileAsBuffer(FS: Emscripten.RootFS, path: string): Uint8Array {
 		return FS.readFile(path);
 	}
@@ -57,7 +56,6 @@ export class FSHelpers {
 	 * @param  path - The file path to write to.
 	 * @param  data - The data to write to the file.
 	 */
-	@rethrowFileSystemError('Could not write to "{path}"')
 	static writeFile(
 		FS: Emscripten.RootFS,
 		path: string,
@@ -73,7 +71,6 @@ export class FSHelpers {
 	 * @param FS
 	 * @param  path - The file path to remove.
 	 */
-	@rethrowFileSystemError('Could not unlink "{path}"')
 	static unlink(FS: Emscripten.RootFS, path: string) {
 		FS.unlink(path);
 	}
@@ -131,12 +128,27 @@ export class FSHelpers {
 	 * @param path The directory path to remove.
 	 * @param options Options for the removal.
 	 */
-	@rethrowFileSystemError('Could not remove directory "{path}"')
 	static rmdir(
 		FS: Emscripten.RootFS,
 		path: string,
 		options: RmDirOptions = { recursive: true }
 	) {
+		/**
+		 * Mount points cannot be removed and will throw a ErrnoError with
+		 * the code 10 (EBUSY).
+		 * To prevent the recursive option from removing internal files before
+		 * failing to remove the mount point, we need to check if the path is a
+		 * mount point and throw an error early.
+		 *
+		 * Because a mountpoint can be a symlink, we should not follow it.
+		 * Otherwise, a mounted sylink would point to the symlinked path,
+		 * instead of the mountpoint.
+		 */
+		const mountPoint = FS.lookupPath(path, { follow: false });
+		if (mountPoint?.node.mount.mountpoint === path) {
+			throw new ErrnoError(10);
+		}
+
 		if (options?.recursive) {
 			FSHelpers.listFiles(FS, path).forEach((file) => {
 				const filePath = `${path}/${file}`;
@@ -146,6 +158,9 @@ export class FSHelpers {
 					FSHelpers.unlink(FS, filePath);
 				}
 			});
+		}
+		if (FS.getPath(FS.lookupPath(path).node) === FS.cwd()) {
+			FS.chdir(joinPaths(FS.cwd(), '..'));
 		}
 		FS.rmdir(path);
 	}
@@ -158,7 +173,6 @@ export class FSHelpers {
 	 * @param  options - Options for the listing.
 	 * @returns The list of files and directories in the given directory.
 	 */
-	@rethrowFileSystemError('Could not list files in "{path}"')
 	static listFiles(
 		FS: Emscripten.RootFS,
 		path: string,
@@ -189,7 +203,6 @@ export class FSHelpers {
 	 * @param  path – The path to check.
 	 * @returns True if the path is a directory, false otherwise.
 	 */
-	@rethrowFileSystemError('Could not stat "{path}"')
 	static isDir(FS: Emscripten.RootFS, path: string): boolean {
 		if (!FSHelpers.fileExists(FS, path)) {
 			return false;
@@ -204,7 +217,6 @@ export class FSHelpers {
 	 * @param  path – The path to check.
 	 * @returns True if the path is a file, false otherwise.
 	 */
-	@rethrowFileSystemError('Could not stat "{path}"')
 	static isFile(FS: Emscripten.RootFS, path: string): boolean {
 		if (!FSHelpers.fileExists(FS, path)) {
 			return false;
@@ -256,7 +268,6 @@ export class FSHelpers {
 	 *
 	 * @returns The real path of the file.
 	 */
-	@rethrowFileSystemError('Could not stat "{path}"')
 	static realpath(FS: Emscripten.RootFS, path: string): string {
 		return FS.lookupPath(path, { follow: true }).path;
 	}
@@ -268,12 +279,11 @@ export class FSHelpers {
 	 * @param  path - The file path to check.
 	 * @returns True if the file exists, false otherwise.
 	 */
-	@rethrowFileSystemError('Could not stat "{path}"')
 	static fileExists(FS: Emscripten.RootFS, path: string): boolean {
 		try {
 			FS.lookupPath(path);
 			return true;
-		} catch (e) {
+		} catch {
 			return false;
 		}
 	}
@@ -286,12 +296,10 @@ export class FSHelpers {
 	 * @param FS
 	 * @param  path - The directory path to create.
 	 */
-	@rethrowFileSystemError('Could not create directory "{path}"')
 	static mkdir(FS: Emscripten.RootFS, path: string) {
 		FS.mkdirTree(path);
 	}
 
-	@rethrowFileSystemError('Could not copy files from "{path}"')
 	static copyRecursive(
 		FS: Emscripten.FileSystemInstance,
 		fromPath: string,
@@ -310,8 +318,51 @@ export class FSHelpers {
 					joinPaths(toPath, filename)
 				);
 			}
+		} else if (FS.isLink(fromNode.mode)) {
+			FS.symlink(FS.readlink(fromPath), toPath);
 		} else {
 			FS.writeFile(toPath, FS.readFile(fromPath));
 		}
 	}
 }
+
+// Apply decorators manually until the decorator syntax is supported
+// by Node.js. We do this so we can take advantage of Node.js type stripping
+// in the meantime.
+// TODO: Inline these decorators once Node.js supports it.
+FSHelpers.readFileAsText = rethrowFileSystemError('Could not read "{path}"')(
+	FSHelpers.readFileAsText
+);
+FSHelpers.readFileAsBuffer = rethrowFileSystemError('Could not read "{path}"')(
+	FSHelpers.readFileAsBuffer
+);
+FSHelpers.writeFile = rethrowFileSystemError('Could not write to "{path}"')(
+	FSHelpers.writeFile
+);
+FSHelpers.unlink = rethrowFileSystemError('Could not unlink "{path}"')(
+	FSHelpers.unlink
+);
+FSHelpers.rmdir = rethrowFileSystemError('Could not remove directory "{path}"')(
+	FSHelpers.rmdir
+);
+FSHelpers.listFiles = rethrowFileSystemError(
+	'Could not list files in "{path}"'
+)(FSHelpers.listFiles);
+FSHelpers.isDir = rethrowFileSystemError('Could not stat "{path}"')(
+	FSHelpers.isDir
+);
+FSHelpers.isFile = rethrowFileSystemError('Could not stat "{path}"')(
+	FSHelpers.isFile
+);
+FSHelpers.realpath = rethrowFileSystemError('Could not stat "{path}"')(
+	FSHelpers.realpath
+);
+FSHelpers.fileExists = rethrowFileSystemError('Could not stat "{path}"')(
+	FSHelpers.fileExists
+);
+FSHelpers.mkdir = rethrowFileSystemError('Could not create directory "{path}"')(
+	FSHelpers.mkdir
+);
+FSHelpers.copyRecursive = rethrowFileSystemError(
+	'Could not copy files from "{path}"'
+)(FSHelpers.copyRecursive);

@@ -24524,6 +24524,9 @@ const DeprecatedExperimentalLinkControl = props => {
     ...props
   });
 };
+DeprecatedExperimentalLinkControl.ViewerFill = LinkControl.ViewerFill;
+DeprecatedExperimentalLinkControl.DEFAULT_LINK_SETTINGS = LinkControl.DEFAULT_LINK_SETTINGS;
+
 /* harmony default export */ const link_control = (LinkControl);
 
 ;// ./node_modules/@wordpress/block-editor/build-module/components/media-replace-flow/index.js
@@ -38942,8 +38945,8 @@ function KeyboardShortcutsRegister() {
       category: 'block',
       description: (0,external_wp_i18n_namespaceObject.__)('Remove the selected block(s).'),
       keyCombination: {
-        modifier: 'primaryShift',
-        character: 'backspace'
+        modifier: 'access',
+        character: 'z'
       }
     });
     registerShortcut({
@@ -61493,9 +61496,9 @@ function ExperimentalBlockCanvas({
   if (!shouldIframe) {
     return /*#__PURE__*/(0,external_ReactJSXRuntime_namespaceObject.jsxs)(BlockTools, {
       __unstableContentRef: localRef,
-      className: "block-editor-block-canvas",
       style: {
-        height
+        height,
+        display: 'flex'
       },
       children: [/*#__PURE__*/(0,external_ReactJSXRuntime_namespaceObject.jsx)(editor_styles, {
         styles: styles,
@@ -61505,13 +61508,16 @@ function ExperimentalBlockCanvas({
         ref: contentRef,
         className: "editor-styles-wrapper",
         tabIndex: -1,
+        style: {
+          height: '100%',
+          width: '100%'
+        },
         children: children
       })]
     });
   }
   return /*#__PURE__*/(0,external_ReactJSXRuntime_namespaceObject.jsx)(BlockTools, {
     __unstableContentRef: localRef,
-    className: "block-editor-block-canvas",
     style: {
       height,
       display: 'flex'
@@ -69732,10 +69738,7 @@ function createLinkInParagraph(url, onReplace) {
 /* harmony default export */ const event_listeners_delete = (props => element => {
   function onKeyDown(event) {
     const {
-      keyCode,
-      shiftKey,
-      ctrlKey,
-      metaKey
+      keyCode
     } = event;
     if (event.defaultPrevented) {
       return;
@@ -69756,11 +69759,6 @@ function createLinkInParagraph(url, onReplace) {
 
       // Only process delete if the key press occurs at an uncollapsed edge.
       if (!(0,external_wp_richText_namespaceObject.isCollapsed)(value) || hasActiveFormats || isReverse && start !== 0 || !isReverse && end !== text.length) {
-        return;
-      }
-
-      // Exclude (command|ctrl)+shift+backspace as they are shortcuts for deleting blocks.
-      if (shiftKey && (ctrlKey || metaKey)) {
         return;
       }
       if (onMerge) {
@@ -71594,7 +71592,7 @@ function useResizeCanvas(deviceType) {
           marginLeft: marginHorizontal,
           marginRight: marginHorizontal,
           height,
-          maxWidth: '100%'
+          overflowY: 'auto'
         };
       default:
         return {
